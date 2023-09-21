@@ -11,7 +11,7 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   final List<Todo> _todos = [];
   final List<TextEditingController> _controllers = [];
-  final FocusNode _focusNode = FocusNode();
+  final List<FocusNode> _focusNodes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _TodoPageState extends State<TodoPage> {
                     Expanded(
                       child: TextField(
                         controller: _controllers[i],
-                        focusNode: _focusNode,
+                        focusNode: _focusNodes[i],
                         decoration: const InputDecoration(
                           hintText: "할 일을 입력하세요",
                           hintStyle: TextStyle(fontSize: 18.0),
@@ -63,7 +63,7 @@ class _TodoPageState extends State<TodoPage> {
 
                         if (_todos[i].isEditing) {
                           _controllers[i].text = _todos[i].title;
-                          _focusNode.requestFocus();
+                          _focusNodes[i].requestFocus();
                         } else {
                           _todos[i].title = _controllers[i].text;
                         }
@@ -91,6 +91,8 @@ class _TodoPageState extends State<TodoPage> {
           setState(() {
             _todos.add(Todo(title: ""));
             _controllers.add(TextEditingController());
+            _focusNodes.add(FocusNode());
+            _focusNodes[_focusNodes.length - 1].requestFocus();
           });
         },
         child: const Icon(Icons.add),
